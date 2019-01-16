@@ -1,19 +1,20 @@
 #! usr/env/bin ruby
 dictionnary = ["the", "of", "and", "to", "a", "in", "for", "is", "on", "that", "by", "this", "with", "i", "you", "it", "not", "or", "be", "are"]
 
-def word_counter(corpus_string, dict_array)
+def words_counter(corpus_string, dict_array)
 	words = corpus_string.downcase.split(/\W+/)
 
-	h = Hash.new { |hash, key| hash[key] = 
-		words.count(key)}
+	words_count_hash = Hash.new { |hash, word_key| hash[word_key] = 
+		words.count(word_key)}
 
 	dict_array.each	do |searched_word|
-		h[searched_word]
+		words_count_hash[searched_word]
+		words_count_hash.keep_if  {|word_key, count_value| !count_value.zero?}
 	end
 
-	puts h
+	puts words_count_hash
 
-	return h
+	return words_count_hash
 end
 
 puts "="*60
@@ -23,7 +24,7 @@ puts
 puts "DICTIONARY"
 puts dictionnary.join(" ").inspect
 puts
-word_counter(IO.read("shakespeare.txt"), dictionnary)
+words_counter(IO.read("shakespeare.txt"), dictionnary)
 puts
 
 insults_array = IO.read("insults.txt").downcase.split(/\W+/)
@@ -36,7 +37,7 @@ puts
 puts "DICTIONARY"
 puts insults_array.join(" ").inspect
 puts
-word_counter(IO.read("shakespeare.txt"), insults_array)
+words_counter(IO.read("shakespeare.txt"), insults_array)
 puts
 puts "END"
 puts 
@@ -50,11 +51,11 @@ puts
 # 	"going", "horn", "how", "howdy", "it", "i", 
 # 	"low", "own", "part", "partner", "sit"]
 
-# puts "new sentence : below"	
-# puts word_counter("below", dictionary)
+# # puts "new sentence : below"	
+# # puts word_counter("below", dictionary)
 # # => {"below"=>1, "low"=>1}
 
-# puts "="*60
+# # puts "="*60
 # puts "new sentence : Howdy partner, sit down! How's it going?"
 # puts word_counter("Howdy partner, sit down! How's it going?", 
 # 	dictionary)
